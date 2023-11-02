@@ -52,3 +52,7 @@ func main() {
 
 - `pokemon`: `pokemonapi.Pokemon` - A Pokemon object containing the details of the requested Pokemon.
 - `err`: `error` - An error object that will be non-nil if there was an issue fetching the Pokemon.
+
+## Decisions and Notes
+
+* I opted to pass in the identifiers as strings instead of using an opts struct. I made this decision simply because the implemented methods all only take 1 string paramater. If I was implementing an endpoint that needed multiple parameters, I believe it would be best to use the opts struct for consistency.
