@@ -27,3 +27,9 @@ if err != nil {
 }
 // Use the 'pokemon' object
 ```
+
+## SpeakEasy + Main.go 
+
+In `main.go`, you will find two different (live) examples. One uses calls from a [managed SpeakEasy SDK](https://www.speakeasyapi.dev/docs/create-client-sdks). The other uses this SDK.  
+
+You can find the "Testing Playground SDK" [here](https://github.com/speakeasy-sdks/testing-playground-sdk).
