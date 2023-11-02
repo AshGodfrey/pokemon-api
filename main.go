@@ -64,8 +64,9 @@ func main() {
 	log.Printf("RawResponse: %s\n", string(customRes.RawResponse))
 
 	// Example 2: Get data from ashgodfrey/pokemonapi
-	pokemonData, err := api.GetPokemon(ctx, "pikachu") 
-		log.Fatalf("Error fetching Pokemon: %v", err)
+	pokemonData, err := api.GetPokemon(ctx, "pikachu")
+	if err != nil {
+		log.Fatalf("Error fetching stat: %v", err)
 	}
 	fmt.Printf("Pokemon Data: %+v\n", pokemonData)
 

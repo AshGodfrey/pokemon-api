@@ -10,46 +10,42 @@ func setup() *Client {
 	return NewClient()
 }
 
-
-
 func TestGetPokemonIntegration(t *testing.T) {
-    client := setup() 
+	client := setup()
 
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-    testCases := []struct {
-        name     string
-        wantErr  bool
-    }{
-        {"pikachu", false}, 
-        {"nonexistentpokemon", true}, 
-    }
+	testCases := []struct {
+		name    string
+		wantErr bool
+	}{
+		{"pikachu", false},
+		{"nonexistentpokemon", true},
+	}
 
-    for _, tc := range testCases {
-        t.Run(tc.name, func(t *testing.T) {
-            pokemon, err := client.GetPokemon(ctx, tc.name)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			pokemon, err := client.GetPokemon(ctx, tc.name)
 
-            if tc.wantErr {
-                if err == nil {
-                    t.Errorf("Expected an error for %s but got none", tc.name)
-                }
-                return
-            }
+			if tc.wantErr {
+				if err == nil {
+					t.Errorf("Expected an error for %s but got none", tc.name)
+				}
+				return
+			}
 
-            if err != nil {
-                t.Fatalf("Error fetching Pokémon '%s': %v", tc.name, err)
-            }
+			if err != nil {
+				t.Fatalf("Error fetching Pokémon '%s': %v", tc.name, err)
+			}
 
-            if pokemon.Name != tc.name {
-                t.Errorf("Expected name to be %s, got %s", tc.name, pokemon.Name)
-            }
+			if pokemon.Name != tc.name {
+				t.Errorf("Expected name to be %s, got %s", tc.name, pokemon.Name)
+			}
 
-        })
-    }
+		})
+	}
 }
-
-
 
 func TestGetNatureIntegration(t *testing.T) {
 	client := setup()

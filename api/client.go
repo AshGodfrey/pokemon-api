@@ -1,18 +1,16 @@
 package api
 
 import (
-	"net/http"
-	"io/ioutil"
-	"encoding/json"
 	"context"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
 )
 
 type Client struct {
 	HTTPClient *http.Client
-	Endpoint string
+	Endpoint   string
 }
-
-
 
 type NamedURL struct {
 	Name string `json:"name"`
@@ -21,8 +19,8 @@ type NamedURL struct {
 
 // Structs related to Pokemon Nature
 type PokeathlonStatChange struct {
-	MaxChange      int       `json:"max_change"`
-	PokeathlonStat NamedURL  `json:"pokeathlon_stat"`
+	MaxChange      int      `json:"max_change"`
+	PokeathlonStat NamedURL `json:"pokeathlon_stat"`
 }
 
 type MoveBattleStylePreference struct {
@@ -88,31 +86,31 @@ type StatDetails struct {
 }
 
 type Pokemon struct {
-	ID                    int
-	Name                  string
-	BaseExperience        int
-	Height                int
-	IsDefault             bool
-	Order                 int
-	Weight                int
-	IsHidden              bool
-	Slot                  int
-	Ability               NamedURL
-	Form                  NamedURL
-	Version               NamedURL
-	Item                  NamedURL
+	ID                     int
+	Name                   string
+	BaseExperience         int
+	Height                 int
+	IsDefault              bool
+	Order                  int
+	Weight                 int
+	IsHidden               bool
+	Slot                   int
+	Ability                NamedURL
+	Form                   NamedURL
+	Version                NamedURL
+	Item                   NamedURL
 	LocationAreaEncounters string
-	Move                  NamedURL
-	Species               NamedURL
-	StatDetails           StatDetails
-	Type                  NamedURL
-	Generation            NamedURL
+	Move                   NamedURL
+	Species                NamedURL
+	StatDetails            StatDetails
+	Type                   NamedURL
+	Generation             NamedURL
 }
 
 func NewClient() *Client {
 	return &Client{
 		HTTPClient: http.DefaultClient,
-		Endpoint: "https://pokeapi.co/api/v2",
+		Endpoint:   "https://pokeapi.co/api/v2",
 	}
 }
 
@@ -153,4 +151,3 @@ func fetchAndUnmarshal[T any](c *Client, endpoint string, dest *T) error {
 
 	return json.Unmarshal(body, dest)
 }
-

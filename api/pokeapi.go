@@ -1,15 +1,13 @@
-
 package api
 
 import (
 	"context"
 	"net/http"
-
 )
 
 var DefaultClient = &Client{
 	HTTPClient: http.DefaultClient,
-	Endpoint: "https://pokeapi.co/api/v2",
+	Endpoint:   "https://pokeapi.co/api/v2",
 }
 
 // GetPokemon retrieves a Pokemon by its ID or name.
