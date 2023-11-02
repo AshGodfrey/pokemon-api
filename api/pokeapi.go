@@ -11,8 +11,8 @@ var DefaultClient = &Client{
 }
 
 // GetPokemon retrieves a Pokemon by its ID or name.
-func GetPokemon(ctx context.Context, idOrName string) (Pokemon, error) {
-	return DefaultClient.GetPokemon(ctx, idOrName)
+func GetPokemon(ctx context.Context, opts GetPokemonOpts) (Pokemon, error) {
+	return DefaultClient.GetPokemon(ctx, opts)
 }
 
 // GetNature retrieves a Nature by its ID or name.
