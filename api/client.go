@@ -5,93 +5,15 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"fmt"
 )
 
-// Constants for stats
-// Stat names as string identifiers
-const (
-	StatHP              = "hp"
-	StatAttack          = "attack"
-	StatDefense         = "defense"
-	StatSpecialAttack   = "special-attack"
-	StatSpecialDefense  = "special-defense"
-	StatSpeed           = "speed"
-)
-
-// Stat IDs mapped to names
-var statsByID = map[string]string{
-	"1": StatHP,
-	"2": StatAttack,
-	"3": StatDefense,
-	"4": StatSpecialAttack,
-	"5": StatSpecialDefense,
-	"6": StatSpeed,
-}
-
-// Nature names as string identifiers
-const (
-	Hardy    = "hardy"
-	Lonely   = "lonely"
-	Brave    = "brave"
-	Adamant  = "adamant"
-	Naughty  = "naughty"
-	Bold     = "bold"
-	Docile   = "docile"
-	Relaxed  = "relaxed"
-	Impish   = "impish"
-	Lax      = "lax"
-	Timid    = "timid"
-	Hasty    = "hasty"
-	Serious  = "serious"
-	Jolly    = "jolly"
-	Naive    = "naive"
-	Modest   = "modest"
-	Mild     = "mild"
-	Quiet    = "quiet"
-	Bashful  = "bashful"
-	Rash     = "rash"
-	Calm     = "calm"
-	Gentle   = "gentle"
-	Sassy    = "sassy"
-	Careful  = "careful"
-	Quirky   = "quirky"
-)
-
-// Nature IDs mapped to nature names
-var naturesByID = map[string]string{
-	"1":  Hardy,
-	"2":  Lonely,
-	"3":  Brave,
-	"4":  Adamant,
-	"5":  Naughty,
-	"6":  Bold,
-	"7":  Docile,
-	"8":  Relaxed,
-	"9":  Impish,
-	"10": Lax,
-	"11": Timid,
-	"12": Hasty,
-	"13": Serious,
-	"14": Jolly,
-	"15": Naive,
-	"16": Modest,
-	"17": Mild,
-	"18": Quiet,
-	"19": Bashful,
-	"20": Rash,
-	"21": Calm,
-	"22": Gentle,
-	"23": Sassy,
-	"24": Careful,
-	"25": Quirky,
-}
 
 
 type Client struct {
 	HTTPClient *http.Client
 	Endpoint   string
 }
+
 
 type NamedURL struct {
 	Name string `json:"name"`
@@ -116,15 +38,15 @@ type NatureName struct {
 }
 
 type Nature struct {
-	ID                         int
-	Name                       string
-	DecreasedStat              NamedURL
-	IncreasedStat              NamedURL
-	LikesFlavor                NamedURL
-	HatesFlavor                NamedURL
-	PokeathlonStatChanges      []PokeathlonStatChange
-	MoveBattleStylePreferences []MoveBattleStylePreference
-	Names                      []NatureName
+	ID                         int                          `json:"id"`
+	Name                       string                       `json:"name"`
+	DecreasedStat              NamedURL                     `json:"decreased_stat"`
+	IncreasedStat              NamedURL                     `json:"increased_stat"`
+	LikesFlavor                NamedURL                     `json:"likes_flavor"`
+	HatesFlavor                NamedURL                     `json:"hates_flavor"`
+	PokeathlonStatChanges      []PokeathlonStatChange       `json:"pokeathlon_stat_changes"`
+	MoveBattleStylePreferences []MoveBattleStylePreference  `json:"move_battle_style_preferences"`
+	Names                      []NatureName                 `json:"names"`
 }
 
 // Structs related to Stat
@@ -147,16 +69,17 @@ type Characteristic struct {
 	URL string `json:"url"`
 }
 
+// Stat represents the details of a specific stat for a Pokémon as defined by the Pokémon API.
 type Stat struct {
-	ID               int
-	Name             string
-	GameIndex        int
-	IsBattleOnly     bool
-	AffectingMoves   AffectingMoves
-	AffectingNatures AffectingNatures
-	Characteristics  []Characteristic
-	MoveDamageClass  NamedURL
-	Names            []NatureName
+	ID               int                 `json:"id"`
+	Name             string              `json:"name"`
+	GameIndex        int                 `json:"game_index"`
+	IsBattleOnly     bool                `json:"is_battle_only"`
+	AffectingMoves   AffectingMoves      `json:"affecting_moves"`
+	AffectingNatures AffectingNatures    `json:"affecting_natures"`
+	Characteristics  []Characteristic    `json:"characteristics"`
+	MoveDamageClass  NamedURL            `json:"move_damage_class"`
+	Names            []NatureName        `json:"names"`
 }
 
 // Struct for Pokemon details
@@ -166,26 +89,27 @@ type StatDetails struct {
 	StatInfo NamedURL `json:"stat_info"`
 }
 
+// Pokemon represents the details of a Pokémon as defined by the Pokémon API.
 type Pokemon struct {
-	ID                     int
-	Name                   string
-	BaseExperience         int
-	Height                 int
-	IsDefault              bool
-	Order                  int
-	Weight                 int
-	IsHidden               bool
-	Slot                   int
-	Ability                NamedURL
-	Form                   NamedURL
-	Version                NamedURL
-	Item                   NamedURL
-	LocationAreaEncounters string
-	Move                   NamedURL
-	Species                NamedURL
-	StatDetails            StatDetails
-	Type                   NamedURL
-	Generation             NamedURL
+	ID                     int            `json:"id"`
+	Name                   string         `json:"name"`
+	BaseExperience         int            `json:"base_experience"`
+	Height                 int            `json:"height"`
+	IsDefault              bool           `json:"is_default"`
+	Order                  int            `json:"order"`
+	Weight                 int            `json:"weight"`
+	IsHidden               bool           `json:"is_hidden"`
+	Slot                   int            `json:"slot"`
+	Ability                NamedURL       `json:"ability"`
+	Form                   NamedURL       `json:"form"`
+	Version                NamedURL       `json:"version"`
+	Item                   NamedURL       `json:"item"`
+	LocationAreaEncounters string         `json:"location_area_encounters"`
+	Move                   NamedURL       `json:"move"`
+	Species                NamedURL       `json:"species"`
+	StatDetails            []StatDetails  `json:"stats"`
+	Type                   NamedURL       `json:"type"`
+	Generation             NamedURL       `json:"generation"`
 }
 
 // GetPokemonOpts contains options for GetPokemon function.
@@ -218,57 +142,14 @@ func (c *Client) GetPokemon(ctx context.Context, idOrName string) (Pokemon, erro
 
 func (c *Client) GetNature(ctx context.Context, idOrName string) (Nature, error) {
 	var nature Nature
-
-	// Check if idOrName is a valid nature identifier
-	if _, ok := naturesByID[idOrName]; !ok {
-		// Attempt to find a corresponding ID if a name was provided
-		for id, name := range naturesByID {
-			if name == idOrName {
-				idOrName = id
-				ok = true
-				break
-			}
-		}
-		// If idOrName is not valid, return an error
-		if !ok {
-			return nature, fmt.Errorf("invalid nature identifier: %s", idOrName)
-		}
-	}
-
-	// If idOrName is valid, continue to fetch and unmarshal
-	endpoint := "/nature/" + idOrName
-	err := fetchAndUnmarshal(c, endpoint, &nature)
+	err := fetchAndUnmarshal(c, "/nature/"+idOrName, &nature)
 	return nature, err
 }
 
 func (c *Client) GetStat(ctx context.Context, idOrName string) (Stat, error) {
 	var stat Stat
-
-	// Check if the idOrName is a valid stat identifier by name
-	if _, ok := statsByID[idOrName]; !ok {
-		// If not a valid ID, check if it's a valid name
-		valid := false
-		for _, name := range []string{StatHP, StatAttack, StatDefense, StatSpecialAttack, StatSpecialDefense, StatSpeed} {
-			if idOrName == name {
-				valid = true
-				break
-			}
-		}
-		if !valid {
-			return stat, fmt.Errorf("invalid stat identifier: %s", idOrName)
-		}
-	} else {
-		// If it's a valid ID, get the corresponding name
-		idOrName = statsByID[idOrName]
-	}
-
-	endpoint := "/stat/" + idOrName
-	err := fetchAndUnmarshal(c, endpoint, &stat)
-	if err != nil {
-		return stat, fmt.Errorf("error fetching stat %s: %v", idOrName, err)
-	}
-	return stat, nil
-
+	err := fetchAndUnmarshal(c, "/stat/"+idOrName, &stat)
+	return stat, err
 }
 
 func (c *Client) fetchData(endpoint string) ([]byte, error) {
@@ -290,3 +171,4 @@ func fetchAndUnmarshal[T any](c *Client, endpoint string, dest *T) error {
 
 	return json.Unmarshal(body, dest)
 }
+

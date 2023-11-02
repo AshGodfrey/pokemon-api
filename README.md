@@ -53,6 +53,69 @@ func main() {
 - `pokemon`: `pokemonapi.Pokemon` - A Pokemon object containing the details of the requested Pokemon.
 - `err`: `error` - An error object that will be non-nil if there was an issue fetching the Pokemon.
 
+### `GetNature`
+
+Retrieve a Nature by its ID or name.
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/ashgodfrey/pokemonapi/api"
+)
+
+func main() {
+	pokemon, err := api.GetNature(context.Background(), "hardy")
+	if err != nil {
+		// Handle error
+	}
+	// Use the 'nature' object
+}
+```
+
+#### Parameters
+
+- `ctx`: `context.Context` - The context to control the lifetime of the request.
+- `identifier`: `string` - The ID or name of the  Nature to retrieve.
+
+#### Returns
+
+- `nature`: `pokemonapi.Nature` - A Nature object containing the details of the requested Nature.
+- `err`: `error` - An error object that will be non-nil if there was an issue fetching the  Nature.
+
+
+### `GetStat`
+
+Retrieve a Stat by its ID or name.
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/ashgodfrey/pokemonapi/api"
+)
+
+func main() {
+	pokemon, err := api.GetStat(context.Background(), "speed")
+	if err != nil {
+		// Handle error
+	}
+	// Use the 'nature' object
+}
+```
+
+#### Parameters
+
+- `ctx`: `context.Context` - The context to control the lifetime of the request.
+- `identifier`: `string` - The ID or name of the stat to retrieve.
+
+#### Returns
+
+- `stat`: `pokemonapi.Stat` - A Nature object containing the details of the requested Stat.
+- `err`: `error` - An error object that will be non-nil if there was an issue fetching the Stat.
+
+
 ## Decisions and Notes
 
-* I opted to pass in the identifiers as strings instead of using an opts struct. I made this decision simply because the implemented methods all only take 1 string paramater. If I was implementing an endpoint that needed multiple parameters, I believe it would be best to use the opts struct for consistency.

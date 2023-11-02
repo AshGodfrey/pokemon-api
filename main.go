@@ -65,7 +65,7 @@ func main() {
 
 	// Example 2: Get data from ashgodfrey/pokemonapi
 
-	statData, err := api.GetStat(ctx, api.StatHP)
+	statData, err := api.GetStat(ctx, "hp")
 	if err != nil {
 		log.Fatalf("Error fetching stat: %v", err)
 	}
