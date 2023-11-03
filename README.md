@@ -46,7 +46,15 @@ func main() {
 }
 ```
 
-* `IncludeLocation` is an optional boolean, if set to `true` then `location_area_encounters` will be an array of locations. Otherwise it will return a URL string as the value.
+
+**Accepts:**
+- `ID`: An integer representing the Pokémon ID (do not use if `Name` is provided).
+- `Name`: A string representing the Pokémon name (do not use if `ID` is provided).
+- `IncludeLocation` (optional): A boolean that when set to `true`, includes an array of location data in the response.
+
+**Returns:**
+- A `Pokemon` object containing the requested Pokémon details.
+- An error object if the call fails.
 
 ### `GetNature`
 
@@ -70,6 +78,13 @@ func main() {
 	// Use the 'nature' object
 }
 ```
+**Accepts:**
+- `ID`: An integer representing the Nature ID (do not use if `Name` is provided).
+- `Name`: A string representing the Nature name (do not use if `ID` is provided).
+
+**Returns:**
+- A `Nature` object containing the requested Nature details.
+- An error object if the call fails.
 
 
 ### `GetStat`
@@ -94,6 +109,16 @@ func main() {
 	// Use the 'stat' object
 }
 ```
+
+**Accepts:**
+- `ID`: An integer representing the Stat ID (do not use if `Name` is provided).
+- `Name`: A string representing the Stat name (do not use if `ID` is provided).
+
+**Returns:**
+- A `Stat` object containing the requested Stat details.
+- An error object if the call fails.
+
+
 ## Testing
 
 * `make` or `make test` to run all tests.
@@ -107,7 +132,7 @@ func main() {
 ## Decisions and Notes
 * The GetPokemon function is designed to return comprehensive location data if `IncludeLocation` is set to `true`, otherwise it will return a URL.
 * Basic data normalization accepts Pokémon names in any case, enhancing usability by abstracting case sensitivity concerns.
-* I explored adding a list of constants for the `names` and `ID`s. I experimented with using `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
+* I explored adding a list of constants for the `names` and `ID`s. I experimented with usingitg `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
 * The choice to keep types within their current files, rather than a separate model file, was made to favor ease of development, as they are not expected to be shared across different packages.
 
 ## Tools Used
