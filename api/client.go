@@ -5,10 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
+	"net/url"
 )
 
 type Client struct {
@@ -198,7 +199,7 @@ func (c *Client) GetPokemon(ctx context.Context, opts GetPokemonOpts) (Pokemon, 
 		return pokemon, err
 	}
 
-	err = fetchAndUnmarshal(c, "/pokemon/"+lookupValue, &pokemon)
+	err = fetchAndUnmarshal(c, "pokemon/"+lookupValue, &pokemon)
 	if err != nil {
 		return pokemon, err
 	}
@@ -206,7 +207,7 @@ func (c *Client) GetPokemon(ctx context.Context, opts GetPokemonOpts) (Pokemon, 
 	// If IncludeLocation is true, make an additional API call for location details
 	if opts.IncludeLocation {
 		var locationDetails []LocationAreaEncounter
-		err = fetchAndUnmarshal(c, fmt.Sprintf("/pokemon/%s/encounters", lookupValue), &locationDetails)
+		err = fetchAndUnmarshal(c, fmt.Sprintf("pokemon/%s/encounters", lookupValue), &locationDetails)
 		if err != nil {
 			return pokemon, err
 		}
@@ -226,7 +227,7 @@ func (c *Client) GetNature(ctx context.Context, opts GetNatureOpts) (Nature, err
 	if err != nil {
 		return nature, err
 	}
-	err = fetchAndUnmarshal(c, "/nature/"+lookupValue, &nature)
+	err = fetchAndUnmarshal(c, "nature/"+lookupValue, &nature)
 	return nature, err
 }
 
@@ -237,34 +238,40 @@ func (c *Client) GetStat(ctx context.Context, opts GetStatOpts) (Stat, error) {
 	if err != nil {
 		return stat, err
 	}
-	err = fetchAndUnmarshal(c, "/stat/"+lookupValue, &stat)
+	err = fetchAndUnmarshal(c, "stat/"+lookupValue, &stat)
 	return stat, err
 }
-
-func (c *Client) fetchData(endpoint string) ([]byte, error) {
-	resp, err := c.HTTPClient.Get(c.Endpoint + endpoint)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, errors.New("Not found")
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-	}
-
-	return ioutil.ReadAll(resp.Body)
-}
-
-// Generic fetch function
 func fetchAndUnmarshal[T any](c *Client, endpoint string, dest *T) error {
-	body, err := c.fetchData(endpoint)
-	if err != nil {
-		return err
-	}
+    // Parse the base URL and resolve the endpoint in a single step
+    finalURL, err := url.Parse(c.Endpoint)
+    if err != nil {
+        return err
+    }
 
-	return json.Unmarshal(body, dest)
+    finalURL, err = finalURL.Parse(endpoint)
+    if err != nil {
+        return err
+    }
+
+    // Make the HTTP GET request
+    resp, err := c.HTTPClient.Get(finalURL.String())
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode == http.StatusNotFound {
+        return errors.New("not found")
+    }
+
+    if resp.StatusCode != http.StatusOK {
+        return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+    }
+
+    body, err := io.ReadAll(resp.Body)
+    if err != nil {
+        return err
+    }
+
+    return json.Unmarshal(body, dest)
 }
