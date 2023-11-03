@@ -241,14 +241,14 @@ func (c *Client) GetStat(ctx context.Context, opts GetStatOpts) (Stat, error) {
 	err = fetchAndUnmarshal(c, "stat/"+lookupValue, &stat)
 	return stat, err
 }
-func fetchAndUnmarshal[T any](c *Client, endpoint string, dest *T) error {
-    // Parse the base URL and resolve the endpoint in a single step
+func fetchAndUnmarshal[T any](c *Client, parameters string, dest *T) error {
+    // Parse the base URL and resolve the parameters
     finalURL, err := url.Parse(c.Endpoint)
     if err != nil {
         return err
     }
 
-    finalURL, err = finalURL.Parse(endpoint)
+    finalURL, err = finalURL.Parse(parameters)
     if err != nil {
         return err
     }
