@@ -101,15 +101,14 @@ func main() {
 * `make e2e-test` to run the end-to-end tests.
 * `make run-main` to run the main.go file.
 *  `make get-pokemon-{pokemon name}` to run the CLI command for {pokemon name}.
-*  `make get-pokemon-location-{pokemon name}` to run the CLI command for {pokemon name} w/ `location=true` and return `pokemon.LocationData`.
+*  `make get-location-{pokemon name}` to run the CLI command for {pokemon name} w/ `location=true` and return `pokemon.LocationData`.
 
 
 ## Decisions and Notes
-* I streamlined the `GetPokemon` call to include the array of location details if a user sets `IncludeLocation` to `true`. Otherwise it will return the URL. 
-* I did some very basic data normalization allowing `Pikachu` or `pikachu` to be sent. Theoretically, I could have left this to the user of the SDK. It's just a small quality-of-life improvement for users to not have to worry about casing.
-* I heavily explored adding a list of constants for the `names` and `ID`s. I experimented with using `iota` and explored the option of `go generate`. In the end, because of the breadth of these fields and me not owning the underlying information, I opted to skip this.
-* There's an argument to move the types into their model file for cleanlines. I decided against that because I don't necessairly expect these to be shared across packages.
-* In a real world scenario Iw
+* The GetPokemon function is designed to return comprehensive location data if `IncludeLocation` is set to `true`, otherwise it will return a URL.
+* Basic data normalization accepts Pokémon names in any case, enhancing usability by abstracting case sensitivity concerns.
+* I explored adding a list of constants for the `names` and `ID`s. I experimented with using `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
+* The choice to keep types within their current files, rather than a separate model file, was made to favor ease of development, as they are not expected to be shared across different packages.
 
 ## Tools Used
 

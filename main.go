@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 // CustomResponse represents the fields to be included in the JSON output.
@@ -67,40 +68,37 @@ func main() {
 
 	// Example 2: Get data from ashgodfrey/pokemonapi
 
-	pokemonData, err := api.GetPokemon(ctx, api.GetPokemonOpts{
-		Name:            "Pikachu",
-		IncludeLocation: true,
-	})
-	if err != nil {
-		log.Fatalf("Error fetching pokemon: %v", err)
-	}
-	fmt.Printf("Pokemon Data: %+v\n", pokemonData.LocationAreaEncounters)
-
 	// Option 3: Pokemon CLI
 
-	cmd := cobra.Command{Use: "pokecli"}
-	cmd.AddCommand(
-		&cobra.Command{
-			Use:  "pokemon",
-			Args: cobra.ExactArgs(1),
-			RunE: GetPokemonCmd,
-		},
-		&cobra.Command{
-			Use:  "pokemon-location",
-			Args: cobra.ExactArgs(1),
-			RunE: GetPokemonLocationCmd,
-		},
-	)
+	var rootCmd = &cobra.Command{Use: "pokecli"}
 
-	cmd.Execute()
+	var cmdGetPokemon = &cobra.Command{
+		Use:   "pokemon [name]",
+		Short: "Get information about a Pokémon",
+		Args:  cobra.ExactArgs(1),
+		RunE:  GetPokemonCmd,
+	}
+
+	var cmdGetLocation = &cobra.Command{
+		Use:   "location [name]",
+		Short: "Get location information for a Pokémon",
+		Args:  cobra.ExactArgs(1),
+		RunE:  GetLocationCmd,
+	}
+
+	rootCmd.AddCommand(cmdGetPokemon, cmdGetLocation)
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 func GetPokemonCmd(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	pokemonName := args[0]
 	pokemon, err := api.GetPokemon(ctx, api.GetPokemonOpts{
-		Name: pokemonName,
-	})
+		Name: pokemonName})
 	if err != nil {
 		fmt.Printf("Error getting Pokémon: %v\n", err)
 		return err
@@ -108,20 +106,19 @@ func GetPokemonCmd(cmd *cobra.Command, args []string) error {
 
 	fmt.Printf("Retrieved Pokémon: %+v\n", pokemon)
 	return nil
-
 }
-func GetPokemonLocationCmd(cmd *cobra.Command, args []string) error {
+
+func GetLocationCmd(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	pokemonName := args[0]
-	pokemon, err := api.GetPokemon(ctx, api.GetPokemonOpts{
+	location, err := api.GetPokemon(ctx, api.GetPokemonOpts{
 		Name:            pokemonName,
-		IncludeLocation: true,
-	})
+		IncludeLocation: true})
 	if err != nil {
-		fmt.Printf("Error getting Pokémon: %v\n", err)
+		fmt.Printf("Error getting Pokémon location: %v\n", err)
 		return err
 	}
 
-	fmt.Printf("Retrieved PokémonData: %+v\n", pokemon.LocationData)
+	fmt.Printf("Retrieved Pokémon Location: %+v\n", location.LocationAreaEncounters)
 	return nil
 }

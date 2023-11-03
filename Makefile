@@ -19,14 +19,14 @@ e2e-test:
 
 
 # Pattern rule for running the CLI tool with a Pokémon name.
-# Usage: make run-cli-<pokemon>
+# Usage: make get-pokemon-<pokemon>
 get-pokemon-%:
 	@echo "Running CLI tool for $*..."
 	@./pokecli pokemon $*
 
 # Pattern rule for running the CLI tool with a Pokémon name & location.
-# Usage: make run-cli-<pokemon>
-get-pokemon-location-%:
+# Usage: make get-location--<pokemon>
+get-location-%:
 	@echo "Running CLI tool for $*..."
-	@./pokecli pokemon-location $*
+	@./pokecli location $*
 
