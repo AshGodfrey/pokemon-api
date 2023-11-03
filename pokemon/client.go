@@ -1,4 +1,4 @@
-package api
+package pokemon
 
 import (
 	"context"
@@ -38,7 +38,7 @@ type NatureName struct {
 	Language NamedURL `json:"language"`
 }
 
-// Nature represents the details of a specific nature as defined by the Pokémon API.
+// Nature represents the details of a specific nature as defined by the Pokémon pokemon.
 type Nature struct {
 	ID                         int                         `json:"id"`
 	Name                       string                      `json:"name"`
@@ -70,7 +70,7 @@ type Characteristic struct {
 	URL string `json:"url"`
 }
 
-// Stat represents the details of a specific stat for a Pokémon as defined by the Pokémon API.
+// Stat represents the details of a specific stat for a Pokémon as defined by the Pokémon pokemon.
 type Stat struct {
 	ID               int              `json:"id"`
 	Name             string           `json:"name"`
@@ -89,7 +89,7 @@ type StatDetails struct {
 	StatInfo NamedURL `json:"stat_info"`
 }
 
-// Pokemon represents the details of a Pokémon as defined by the Pokémon API.
+// Pokemon represents the details of a Pokémon as defined by the Pokémon pokemon.
 type Pokemon struct {
 	ID             int      `json:"id"`
 	Name           string   `json:"name"`

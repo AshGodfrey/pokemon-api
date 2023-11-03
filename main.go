@@ -1,18 +1,18 @@
-// Example showing both pokemon/api and /testing-playground-sdk
+// Example showing both pokemonapi/pokemon and /testing-playground-sdk
 package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ashgodfrey/pokemonapi/api"
+	"github.com/ashgodfrey/pokemonapi/pokemon"
 	"github.com/speakeasy-sdks/testing-playground-sdk"
 	"github.com/speakeasy-sdks/testing-playground-sdk/pkg/models/operations"
-	"github.com/spf13/cobra"
+"github.com/spf13/cobra"
 	"io/ioutil"
 	"log"
 	"os"
-)
+	)
 
 // CustomResponse represents the fields to be included in the JSON output.
 type CustomResponse struct {
@@ -68,7 +68,15 @@ func main() {
 
 	// Example 2: Get data from ashgodfrey/pokemonapi
 
-	// Option 3: Pokemon CLI
+	pokemonData, err := pokemon.GetPokemon(ctx, pokemon.GetPokemonOpts{
+		Name: "Pikachu",
+	})
+	if err != nil {
+		log.Fatalf("Error fetching pokemon: %v", err)
+	}
+	fmt.Printf("Pokemon Data: %+v\n", pokemonData.LocationAreaEncounters)
+
+	// Option 3: Pokemon CLI 
 
 	var rootCmd = &cobra.Command{Use: "pokecli"}
 
@@ -97,8 +105,8 @@ func main() {
 func GetPokemonCmd(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	pokemonName := args[0]
-	pokemon, err := api.GetPokemon(ctx, api.GetPokemonOpts{
-		Name: pokemonName})
+	pokemon, err := pokemon.GetPokemon(ctx, pokemon.GetPokemonOpts{
+		Name: pokemonName,})
 	if err != nil {
 		fmt.Printf("Error getting Pokémon: %v\n", err)
 		return err
@@ -111,9 +119,9 @@ func GetPokemonCmd(cmd *cobra.Command, args []string) error {
 func GetLocationCmd(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 	pokemonName := args[0]
-	location, err := api.GetPokemon(ctx, api.GetPokemonOpts{
-		Name:            pokemonName,
-		IncludeLocation: true})
+	location, err := pokemon.GetPokemon(ctx, pokemon.GetPokemonOpts{
+		Name: pokemonName,
+		IncludeLocation: true,})
 	if err != nil {
 		fmt.Printf("Error getting Pokémon location: %v\n", err)
 		return err
