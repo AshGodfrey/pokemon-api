@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
-	"net/url"
 )
 
 type Client struct {
@@ -242,36 +242,36 @@ func (c *Client) GetStat(ctx context.Context, opts GetStatOpts) (Stat, error) {
 	return stat, err
 }
 func fetchAndUnmarshal[T any](c *Client, parameters string, dest *T) error {
-    // Parse the base URL and resolve the parameters
-    finalURL, err := url.Parse(c.Endpoint)
-    if err != nil {
-        return err
-    }
+	// Parse the base URL and resolve the parameters
+	finalURL, err := url.Parse(c.Endpoint)
+	if err != nil {
+		return err
+	}
 
-    finalURL, err = finalURL.Parse(parameters)
-    if err != nil {
-        return err
-    }
+	finalURL, err = finalURL.Parse(parameters)
+	if err != nil {
+		return err
+	}
 
-    // Make the HTTP GET request
-    resp, err := c.HTTPClient.Get(finalURL.String())
-    if err != nil {
-        return err
-    }
-    defer resp.Body.Close()
+	// Make the HTTP GET request
+	resp, err := c.HTTPClient.Get(finalURL.String())
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 
-    if resp.StatusCode == http.StatusNotFound {
-        return errors.New("not found")
-    }
+	if resp.StatusCode == http.StatusNotFound {
+		return errors.New("not found")
+	}
 
-    if resp.StatusCode != http.StatusOK {
-        return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
-    }
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
 
-    body, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return err
-    }
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 
-    return json.Unmarshal(body, dest)
+	return json.Unmarshal(body, dest)
 }
