@@ -66,8 +66,7 @@ func main() {
 	// Example 2: Get data from ashgodfrey/pokemonapi
 
 	pokemonData, err := api.GetPokemon(ctx, api.GetPokemonOpts{
-		IDOrName:        "pikachu",
-		IncludeLocation: true,
+		Name: "Pikachu",
 	})
 	if err != nil {
 		log.Fatalf("Error fetching pokemon: %v", err)

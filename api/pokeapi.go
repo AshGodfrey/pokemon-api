@@ -16,11 +16,11 @@ func GetPokemon(ctx context.Context, opts GetPokemonOpts) (Pokemon, error) {
 }
 
 // GetNature retrieves a Nature by its ID or name.
-func GetNature(ctx context.Context, idOrName string) (Nature, error) {
-	return DefaultClient.GetNature(ctx, idOrName)
+func GetNature(ctx context.Context, opts GetNatureOpts) (Nature, error) {
+	return DefaultClient.GetNature(ctx, opts)
 }
 
 // GetStat retrieves a Stat by its ID or name.
-func GetStat(ctx context.Context, idOrName string) (Stat, error) {
-	return DefaultClient.GetStat(ctx, idOrName)
+func GetStat(ctx context.Context, opts GetStatOpts) (Stat, error) {
+	return DefaultClient.GetStat(ctx, opts)
 }

@@ -35,23 +35,16 @@ import (
 )
 
 func main() {
-	pokemon, err := api.GetPokemon(context.Background(), "bulbasaur")
+	pokemon, err := api.GetPokemon(context.Background(), GetPokemonOpts {
+        ID: 1,
+        IncludeLocation: true,
+    })
 	if err != nil {
 		// Handle error
 	}
 	// Use the 'pokemon' object
 }
 ```
-
-#### Parameters
-
-- `ctx`: `context.Context` - The context to control the lifetime of the request.
-- `identifier`: `string` - The ID or name of the Pokemon to retrieve.
-
-#### Returns
-
-- `pokemon`: `pokemonapi.Pokemon` - A Pokemon object containing the details of the requested Pokemon.
-- `err`: `error` - An error object that will be non-nil if there was an issue fetching the Pokemon.
 
 ### `GetNature`
 
@@ -66,23 +59,15 @@ import (
 )
 
 func main() {
-	pokemon, err := api.GetNature(context.Background(), "hardy")
+	pokemon, err := api.GetNature(context.Background(), GetNatureOpts{
+        ID: 1,
+    })
 	if err != nil {
 		// Handle error
 	}
 	// Use the 'nature' object
 }
 ```
-
-#### Parameters
-
-- `ctx`: `context.Context` - The context to control the lifetime of the request.
-- `identifier`: `string` - The ID or name of the  Nature to retrieve.
-
-#### Returns
-
-- `nature`: `pokemonapi.Nature` - A Nature object containing the details of the requested Nature.
-- `err`: `error` - An error object that will be non-nil if there was an issue fetching the  Nature.
 
 
 ### `GetStat`
@@ -98,23 +83,15 @@ import (
 )
 
 func main() {
-	pokemon, err := api.GetStat(context.Background(), "speed")
+	stat, err := api.GetStat(context.Background(), GetStatOpts{
+        Name: "speed",
+    })
 	if err != nil {
 		// Handle error
 	}
-	// Use the 'nature' object
+	// Use the 'stat' object
 }
 ```
-
-#### Parameters
-
-- `ctx`: `context.Context` - The context to control the lifetime of the request.
-- `identifier`: `string` - The ID or name of the stat to retrieve.
-
-#### Returns
-
-- `stat`: `pokemonapi.Stat` - A Nature object containing the details of the requested Stat.
-- `err`: `error` - An error object that will be non-nil if there was an issue fetching the Stat.
 
 
 ## Decisions and Notes
