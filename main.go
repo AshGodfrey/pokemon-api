@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ashgodfrey/pokemonapi/pokemon"
+	"github.com/ashgodfrey/pokemon-api/pokemon"
 	"github.com/speakeasy-sdks/testing-playground-sdk"
 	"github.com/speakeasy-sdks/testing-playground-sdk/pkg/models/operations"
 	"github.com/spf13/cobra"
