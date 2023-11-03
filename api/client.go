@@ -3,12 +3,12 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
-	"errors"
 	"strconv"
+	"strings"
 )
 
 type Client struct {
@@ -90,19 +90,19 @@ type StatDetails struct {
 
 // Pokemon represents the details of a Pokémon as defined by the Pokémon API.
 type Pokemon struct {
-	ID                     int            `json:"id"`
-	Name                   string         `json:"name"`
-	BaseExperience         int            `json:"base_experience"`
-	Height                 int            `json:"height"`
-	IsDefault              bool           `json:"is_default"`
-	Order                  int            `json:"order"`
-	Weight                 int            `json:"weight"`
-	IsHidden               bool           `json:"is_hidden"`
-	Slot                   int            `json:"slot"`
-	Ability                NamedURL       `json:"ability"`
-	Form                   NamedURL       `json:"form"`
-	Version                NamedURL       `json:"version"`
-	Item                   NamedURL       `json:"item"`
+	ID             int      `json:"id"`
+	Name           string   `json:"name"`
+	BaseExperience int      `json:"base_experience"`
+	Height         int      `json:"height"`
+	IsDefault      bool     `json:"is_default"`
+	Order          int      `json:"order"`
+	Weight         int      `json:"weight"`
+	IsHidden       bool     `json:"is_hidden"`
+	Slot           int      `json:"slot"`
+	Ability        NamedURL `json:"ability"`
+	Form           NamedURL `json:"form"`
+	Version        NamedURL `json:"version"`
+	Item           NamedURL `json:"item"`
 	// LocationAreaEncounters will return an array if IncludeLocation is true, otherwise it will return a string URL.
 	LocationAreaEncounters EncountersData `json:"location_area_encounters"`
 	Move                   NamedURL       `json:"move"`
@@ -190,15 +190,13 @@ func getLookupValue(id int, name string) (string, error) {
 	return "", errors.New("you must provide either an ID or a Name")
 }
 
-
 // GetPokemon gets a Pokemon by ID or Name.
 func (c *Client) GetPokemon(ctx context.Context, opts GetPokemonOpts) (Pokemon, error) {
 	var pokemon Pokemon
 	lookupValue, err := getLookupValue(opts.ID, opts.Name)
 	if err != nil {
-        return pokemon, err
-    }
-
+		return pokemon, err
+	}
 
 	err = fetchAndUnmarshal(c, "/pokemon/"+lookupValue, &pokemon)
 	if err != nil {
@@ -226,20 +224,19 @@ func (c *Client) GetNature(ctx context.Context, opts GetNatureOpts) (Nature, err
 	var nature Nature
 	lookupValue, err := getLookupValue(opts.ID, opts.Name)
 	if err != nil {
-        return nature, err
-    }
+		return nature, err
+	}
 	err = fetchAndUnmarshal(c, "/nature/"+lookupValue, &nature)
 	return nature, err
 }
-
 
 // GetStat gets a stat by ID or Name.
 func (c *Client) GetStat(ctx context.Context, opts GetStatOpts) (Stat, error) {
 	var stat Stat
 	lookupValue, err := getLookupValue(opts.ID, opts.Name)
 	if err != nil {
-        return stat, err
-    }
+		return stat, err
+	}
 	err = fetchAndUnmarshal(c, "/stat/"+lookupValue, &stat)
 	return stat, err
 }
@@ -250,6 +247,14 @@ func (c *Client) fetchData(endpoint string) ([]byte, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, errors.New("Not found")
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+	}
 
 	return ioutil.ReadAll(resp.Body)
 }
