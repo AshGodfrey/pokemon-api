@@ -95,7 +95,7 @@ func TestGetNature(t *testing.T) {
 	}{
 		{
 			scenario:   "Successful retrieval of a nature",
-			natureName: "adamant",
+			natureName: "hardy",
 			expected: Nature{
 				ID:            1,
 				Name:          "hardy",
