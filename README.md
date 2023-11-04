@@ -132,7 +132,7 @@ func main() {
 ## Decisions and Notes
 * The GetPokemon function is designed to return comprehensive location data if `IncludeLocation` is set to `true`, otherwise it will return a URL.
 * Basic data normalization accepts Pokémon names in any case, enhancing usability by abstracting case sensitivity concerns.
-* I explored adding a list of constants for the `names` and `ID`s. I experimented with usingitg `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
+* I explored adding a list of constants for the `names` and `ID`s. I experimented with using `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible changing nature of the underlying Pokémon data.
 * The choice to keep types within their current files, rather than a separate model file, was made to favor ease of development, as they are not expected to be shared across different packages.
 * If my Go file contained multiple packages, I'd adjust the stucture accordingly by adding a `/pkg` folder for each.
 
