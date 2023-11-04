@@ -134,11 +134,11 @@ func main() {
 * Basic data normalization accepts Pokémon names in any case, enhancing usability by abstracting case sensitivity concerns.
 * I explored adding a list of constants for the `names` and `ID`s. I experimented with usingitg `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
 * The choice to keep types within their current files, rather than a separate model file, was made to favor ease of development, as they are not expected to be shared across different packages.
-* If my Go file contained multiple packages, I'd adjust the stucture accordingly by adding a `/pkg` file for each.
+* If my Go file contained multiple packages, I'd adjust the stucture accordingly by adding a `/pkg` folder for each.
 
 ## Tools Used
 
 - [Go](https://golang.org/): The Go programming language is an open source project to make programmers more productive.
 
-- [Cobra](https://github.com/spf13/cobra): Cobra is both a library for creating powerful modern CLI applications as well as a program to generate applications and command files.
+- [Cobra](https://github.com/spf13/cobra): Cobra is both a library for creating powerful modern CLI applications as well as a program to generate applications and command files. In this SDK it's used only in `main.go` to allow anyone who downloads the SDK to run a CLI commmand (for fun). It's not necessary to use the SDK.
 
