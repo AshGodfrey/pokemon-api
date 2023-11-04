@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is an SDK (Software Development Kit) for interacting with a Pokemon-related API. It provides convenient functions for retrieving information about Pokemon, Nature, and Stats. The SDK is designed to simplify the process of making API requests and handling responses in your Go applications.
+This is an SDK (Software Development Kit) for interacting with a Pokemon-related pokemon. It provides convenient functions for retrieving information about Pokemon, Nature, and Stats. The SDK is designed to simplify the process of making API requests and handling responses in your Go applications.
 
 ## Installation
 
@@ -14,7 +14,7 @@ go get -u "github.com/ashgodfrey/pokemon-api"
 
 ## SpeakEasy + Main.go 
 
-In `main.go`, you will find two different (live) examples. One uses calls from a [managed SpeakEasy SDK](https://www.speakeasyapi.dev/docs/create-client-sdks). The other uses this SDK.  
+In `main.go`, you will find two different (live) examples. One uses calls from a [managed SpeakEasy SDK](https://www.speakeasypokemon.dev/docs/create-client-sdks). The other uses this SDK.  
 
 You can find the "Testing Playground SDK" [here](https://github.com/speakeasy-sdks/testing-playground-sdk).
 
@@ -31,11 +31,11 @@ package main
 
 import (
 	"context"
-	"github.com/ashgodfrey/pokemonapi/api"
+	"github.com/ashgodfrey/pokemon-api/pokemon"
 )
 
 func main() {
-	pokemon, err := api.GetPokemon(context.Background(), GetPokemonOpts {
+	pokemon, err := pokemon.GetPokemon(context.Background(), GetPokemonOpts {
         ID: 1,
         IncludeLocation: true,
     })
@@ -65,11 +65,11 @@ package main
 
 import (
 	"context"
-	"github.com/ashgodfrey/pokemonapi/api"
+	"github.com/ashgodfrey/pokemon-api/pokemon"
 )
 
 func main() {
-	pokemon, err := api.GetNature(context.Background(), GetNatureOpts{
+	pokemon, err := pokemon.GetNature(context.Background(), GetNatureOpts{
         ID: 1,
     })
 	if err != nil {
@@ -96,11 +96,11 @@ package main
 
 import (
 	"context"
-	"github.com/ashgodfrey/pokemonapi/api"
+	"github.com/ashgodfrey/pokemon-api/pokemon"
 )
 
 func main() {
-	stat, err := api.GetStat(context.Background(), GetStatOpts{
+	stat, err := pokemon.GetStat(context.Background(), GetStatOpts{
         Name: "speed",
     })
 	if err != nil {
@@ -134,6 +134,7 @@ func main() {
 * Basic data normalization accepts Pokémon names in any case, enhancing usability by abstracting case sensitivity concerns.
 * I explored adding a list of constants for the `names` and `ID`s. I experimented with usingitg `iota` and explored the option of `go generate`. Ultimately this was not implemented due to the possible dynamic nature of the underlying Pokémon data.
 * The choice to keep types within their current files, rather than a separate model file, was made to favor ease of development, as they are not expected to be shared across different packages.
+* If my Go file contained multiple packages, I'd adjust the stucture accordingly by adding a `/pkg` file for each.
 
 ## Tools Used
 
